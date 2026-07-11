@@ -1,59 +1,26 @@
-# LetterLens — Handwritten Digit Recognition
+# LetterLens — Handwritten Character Recognition
 
-A CNN-powered Streamlit app that recognizes handwritten digits (0–9) drawn directly on a canvas or uploaded as an image.
+A Streamlit app that recognizes handwritten digits drawn directly on a canvas, powered by a CNN trained on MNIST.
 
-Built as **CodeAlpha ML Internship — Task 3**.
+## What It Does
 
-## Demo
+Draw a digit on the canvas, get a real-time prediction with confidence score.
 
-Draw a digit on the canvas (or upload an image) and the model predicts it instantly, showing the top-3 most likely digits with confidence scores.
+## Approach
 
-## Model
+Originally targeted EMNIST for full alphanumeric recognition, but EMNIST's cursive/dataset handwriting style didn't transfer well to canvas-drawn input — the model performed poorly on real user strokes despite good validation accuracy. Pivoted to MNIST digits after systematic root-cause debugging of the mismatch, prioritizing a model that actually works on real input over one that scores well on a mismatched benchmark.
 
-- **Dataset:** MNIST (60,000 training images, 10,000 test images)
-- **Architecture:** Convolutional Neural Network — Conv2D ×4, BatchNormalization, MaxPooling, Dropout, Dense layers
-- **Test Accuracy:** 99.52%
-- **Input:** 28×28 grayscale images
-- **Output:** 10 classes (digits 0–9)
+- **Architecture:** CNN with Keras built-in augmentation layers (`RandomRotation`, `RandomZoom`, `RandomTranslation`) to generalize better to imperfect canvas strokes
+- **Result:** 99.24% test accuracy
 
-## Tech Stack
+## Stack
 
-- **TensorFlow / Keras** — model training and inference
-- **Streamlit** — web app UI
-- **streamlit-drawable-canvas** — interactive drawing canvas
-- **Plotly** — confidence visualization
-- **Pillow / NumPy** — image preprocessing
+Python · TensorFlow/Keras · Streamlit · CNN
 
-## Project Structure
+## UI
 
-```
-CodeAlpha_HandwrittenCharacterRecognition/
-├── app.py                  # Streamlit application
-├── train.py                # CNN training script
-├── utils/
-│   └── preprocess.py       # Canvas & upload image preprocessing
-├── model/
-│   └── letterlens_cnn.keras
-└── README.md
-```
-
-## Running Locally
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-## How It Works
-
-1. User draws a digit on the canvas or uploads an image
-2. Image is converted to grayscale, inverted, resized to 28×28, and normalized
-3. The trained CNN predicts the digit and returns confidence scores
-4. Top-3 predictions are displayed with a bar chart
-
-## Notes
-
-The model is trained specifically on MNIST and supports single handwritten digits (0–9). For best results, write large, centered, with thick strokes.
+Dark theme with gold accents, live drawable canvas.
 
 ---
-Built by Vishvraj · CodeAlpha ML Internship · 2026
+
+*CodeAlpha Machine Learning Internship — Task 3*
